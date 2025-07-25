@@ -1,72 +1,166 @@
-<!DOCTYPE html>
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weekly Meal Plan: July 18-24, 2025</title>
+    <title>Weekly Meal Plan: July 25–31, 2025</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
-        h1, h2, h3 { color: #333; }
-        ul { list-style-type: none; padding: 0; }
-        li { margin-bottom: 10px; }
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        h2 { margin-top: 20px; }
         a { color: #0066cc; text-decoration: none; }
         a:hover { text-decoration: underline; }
-        .section { margin-bottom: 30px; }
     </style>
 </head>
 <body>
-    <h1>Weekly Meal Plan: July 18-24, 2025</h1>
-    <div id="meal-plan" class="section">
-        <h2>Daily Meals</h2>
-        <h3>Friday, July 18</h3>
-        <ul>
-            <li>Breakfast: <a href="overnight_oats_berries.html">Overnight Oats with Berries</a></li>
-            <li>Lunch: <a href="spinach_black_bean_wrap.html">Spinach and Black Bean Wrap</a></li>
-            <li>Dinner: <a href="chicken_casserole.html">Southern Chicken and Rice Casserole</a></li>
-            <li>Snacks: <a href="trail_mix.html">Trail Mix</a>, <a href="berry_smoothie.html">Berry Smoothie</a></li>
-        </ul>
-        <h3>Saturday, July 19</h3>
-        <ul>
-            <li>Breakfast: <a href="yogurt_parfait_trail_mix.html">Yogurt Parfait with Trail Mix</a></li>
-            <li>Lunch: <a href="chicken_casserole.html">Chicken Casserole Leftover</a></li>
-            <li>Dinner: <a href="chicken_casserole.html">Chicken Casserole Leftover</a></li>
-            <li>Snack: <a href="trail_mix.html">Trail Mix</a></li>
-        </ul>
-        <h3>Sunday, July 20</h3>
-        <ul>
-            <li>Breakfast: <a href="overnight_oats_apple.html">Overnight Oats with Apple</a></li>
-            <li>Lunch: <a href="chicken_casserole.html">Chicken Casserole Leftover</a></li>
-            <li>Dinner: <a href="chicken_casserole.html">Chicken Casserole Leftover</a></li>
-            <li>Snack: <a href="trail_mix.html">Trail Mix</a></li>
-        </ul>
-        <h3>Monday, July 21</h3>
-        <ul>
-            <li>Breakfast: <a href="yogurt_parfait_berries.html">Yogurt Parfait with Berries</a></li>
-            <li>Lunch: <a href="spinach_black_bean_wrap.html">Spinach and Black Bean Wrap</a></li>
-            <li>Dinner: <a href="chicken_casserole.html">Chicken Casserole Leftover</a></li>
-            <li>Snacks: <a href="trail_mix.html">Trail Mix</a>, <a href="berry_smoothie.html">Berry Smoothie</a></li>
-        </ul>
-        <h3>Tuesday, July 22</h3>
-        <ul>
-            <li>Breakfast: <a href="overnight_oats_berries.html">Overnight Oats with Berries</a></li>
-            <li>Lunch: <a href="spinach_black_bean_wrap.html">Spinach and Black Bean Wrap</a></li>
-            <li>Dinner: <a href="bbq_pulled_pork.html">Southern BBQ Pulled Pork with Cornbread</a></li>
-            <li>Snack: <a href="trail_mix.html">Trail Mix</a></li>
-        </ul>
-        <h3>Wednesday, July 23</h3>
-        <ul>
-            <li>Breakfast: <a href="yogurt_parfait_apple.html">Yogurt Parfait with Apple</a></li>
-            <li>Lunch: <a href="bbq_pulled_pork.html">BBQ Pulled Pork Leftover</a></li>
-            <li>Dinner: <a href="bbq_pulled_pork.html">BBQ Pulled Pork Leftover</a></li>
-            <li>Snack: <a href="trail_mix.html">Trail Mix</a></li>
-        </ul>
-        <h3>Thursday, July 24</h3>
-        <ul>
-            <li>Breakfast: <a href="overnight_oats_berries.html">Overnight Oats with Berries</a></li>
-            <li>Lunch: <a href="bbq_pulled_pork.html">BBQ Pulled Pork Leftover</a></li>
-            <li>Dinner: <a href="bbq_pulled_pork.html">BBQ Pulled Pork Leftover</a></li>
-            <li>Snacks: <a href="trail_mix.html">Trail Mix</a>, <a href="apple_banana_smoothie.html">Apple-Banana Smoothie</a></li>
-        </ul>
-    </div>
+    <h1>Weekly Meal Plan: July 25–31, 2025</h1>
+    
+    <h2>Shopping List</h2>
+    <p><a href="#shopping_list">View Shopping List</a></p>
+    
+    <h2 id="meals">Meals and Frequency</h2>
+    <ul>
+        <li><a href="overnight_oats.html">Overnight Oats with Chia and Fruit</a>: 4 times (Breakfast: Fri, Mon, Wed, Thu)</li>
+        <li><a href="berry_smoothie.html">Berry Smoothie</a>: 2 times (Breakfast: Sat, Tue)</li>
+        <li><a href="banana_pb_smoothie.html">Banana Peanut Butter Smoothie</a>: 1 time (Breakfast: Sun)</li>
+        <li><a href="black_bean_wrap.html">Black Bean and Veggie Wrap</a>: 1 time (Lunch: Fri)</li>
+        <li><a href="chicken_stir_fry.html">Chicken Stir-Fry with Success Rice</a>: 6 times (Dinner: Fri; Lunch: Sat, Sun, Mon, Tue; Dinner: Sat)</li>
+        <li>Existing Leftovers: 2 times (Lunch/Dinner: Wed, Thu)</li>
+        <li><a href="chia_pudding.html">Chia Seed Pudding</a>: 7 times (Snack: Daily)</li>
+        <li>Trail Mix: 7 times (Snack: Daily)</li>
+        <li>Fresh Fruit (Apple or Banana): 7 times (Snack: Daily)</li>
+    </ul>
+    
+    <h2>Weekly Meal Schedule</h2>
+    <table>
+        <tr>
+            <th>Day</th>
+            <th>Breakfast</th>
+            <th>Lunch</th>
+            <th>Dinner</th>
+            <th>Snacks</th>
+        </tr>
+        <tr>
+            <td>Friday, July 25</td>
+            <td><a href="overnight_oats.html">Overnight Oats with Chia and Fruit</a></td>
+            <td><a href="black_bean_wrap.html">Black Bean and Veggie Wrap</a></td>
+            <td><a href="chicken_stir_fry.html">Chicken Stir-Fry with Success Rice</a></td>
+            <td>Trail Mix (1 oz), <a href="chia_pudding.html">Chia Seed Pudding</a>, Apple</td>
+        </tr>
+        <tr>
+            <td>Saturday, July 26</td>
+            <td><a href="berry_smoothie.html">Berry Smoothie</a></td>
+            <td><a href="chicken_stir_fry.html">Chicken Stir-Fry with Success Rice (Leftover)</a></td>
+            <td><a href="chicken_stir_fry.html">Chicken Stir-Fry with Success Rice (Leftover)</a></td>
+            <td>Trail Mix (1 oz), <a href="chia_pudding.html">Chia Seed Pudding</a>, Banana</td>
+        </tr>
+        <tr>
+            <td>Sunday, July 27</td>
+            <td><a href="banana_pb_smoothie.html">Banana Peanut Butter Smoothie</a></td>
+            <td><a href="chicken_stir_fry.html">Chicken Stir-Fry with Success Rice (Leftover)</a></td>
+            <td>Existing Leftover</td>
+            <td>Trail Mix (1 oz), <a href="chia_pudding.html">Chia Seed Pudding</a>, Apple</td>
+        </tr>
+        <tr>
+            <td>Monday, July 28</td>
+            <td><a href="overnight_oats.html">Overnight Oats with Chia and Fruit</a></td>
+            <td><a href="chicken_stir_fry.html">Chicken Stir-Fry with Success Rice (Leftover)</a></td>
+            <td>Existing Leftover</td>
+            <td>Trail Mix (1 oz), <a href="chia_pudding.html">Chia Seed Pudding</a>, Banana</td>
+        </tr>
+        <tr>
+            <td>Tuesday, July 29</td>
+            <td><a href="berry_smoothie.html">Berry Smoothie</a></td>
+            <td><a href="chicken_stir_fry.html">Chicken Stir-Fry with Success Rice (Leftover)</a></td>
+            <td>Existing Leftover</td>
+            <td>Trail Mix (1 oz), <a href="chia_pudding.html">Chia Seed Pudding</a>, Apple</td>
+        </tr>
+        <tr>
+            <td>Wednesday, July 30</td>
+            <td><a href="overnight_oats.html">Overnight Oats with Chia and Fruit</a></td>
+            <td>Existing Leftover</td>
+            <td>Existing Leftover</td>
+            <td>Trail Mix (1 oz), <a href="chia_pudding.html">Chia Seed Pudding</a>, Banana</td>
+        </tr>
+        <tr>
+            <td>Thursday, July 31</td>
+            <td><a href="overnight_oats.html">Overnight Oats with Chia and Fruit</a></td>
+            <td>Existing Leftover</td>
+            <td>Existing Leftover</td>
+            <td>Trail Mix (1 oz), <a href="chia_pudding.html">Chia Seed Pudding</a>, Apple</td>
+        </tr>
+    </table>
+    
+    <h2 id="shopping_list">Shopping List</h2>
+    <pre>
+# Shopping List for July 25–31, 2025
+
+| Item | Quantity | Estimated Price | Notes |
+|------|----------|-----------------|-------|
+| Boneless Chicken Breast | 3 lbs | $5.97 ($1.99/lb) | Digital coupon |
+| Kroger Old Fashioned Oats (42 oz) | 1 | $2.99 | Digital coupon |
+| Kroger Greek Yogurt Cups (5.3 oz, plain) | 7 | $5.60 (5 for $4) | Digital coupon |
+| Kroger Milk (Gallon, 2%) | 1 | $2.50 | Digital coupon |
+| Bananas | 2 lbs (approx. 6 medium) | $0.78 ($0.39/lb) | Weekly ad deal |
+| Apples (Gala, 3 lb bag) | 1 | $2.99 | Digital coupon |
+| Kroger Frozen Mixed Vegetables (12 oz) | 2 bags | $2.00 (10 for $10) | Weekly ad deal |
+| Success Boil-in-Bag Rice (14 oz, 4 family-size bags) | 1 box | $2.49 | Digital coupon |
+| Kroger Trail Mix (12 oz) | 1 | $3.99 | Weekly ad deal |
+| Chia Seeds (16 oz) | 1 | $5.99 | Typical price |
+| Honey (12 oz) | 1 | $3.49 | Typical price |
+| Kroger Soy Sauce (10 oz) | 1 | $1.49 | Digital coupon |
+| Garlic (bulb) | 1 | $0.50 | Typical price |
+| Onion (yellow) | 1 | $0.79 | Typical price |
+| Kroger Frozen Strawberries (16 oz) | 1 | $2.49 | Digital coupon |
+| Kroger Frozen Blueberries (12 oz) | 1 | $2.99 | Digital coupon |
+| Bell Peppers (red, 2-pack) | 1 pack | $2.49 | Typical price |
+| Kroger Peanut Butter (16 oz) | 1 | $2.29 | Typical price |
+| Whole Wheat Bread (loaf) | 1 | $1.99 | Typical price |
+| Kroger Canned Black Beans (15 oz) | 1 | $0.99 | Typical price |
+| Kroger Frozen Spinach (10 oz) | 1 | $1.49 | Typical price |
+
+**Estimated Total Cost**: $53.02
+    </pre>
 </body>
 </html>
