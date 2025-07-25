@@ -2,7 +2,8 @@
 
 | Item | Quantity | Estimated Price | Notes |
 |------|----------|-----------------|-------|
-| Boneless Chicken Breast | 3 lbs | $5.97 ($1.99/lb) | Digital coupon |
+| Boneless Chicken Breast | 2.5 lbs | $4.98 ($1.99/lb) | Digital coupon |
+| Kroger Mild Italian Sausage | 1 lb | $3.99 | Typical price |
 | Kroger Old Fashioned Oats (42 oz) | 1 | $2.99 | Digital coupon |
 | Kroger Greek Yogurt Cups (5.3 oz, plain) | 7 | $5.60 (5 for $4) | Digital coupon |
 | Kroger Milk (Gallon, 2%) | 1 | $2.50 | Digital coupon |
@@ -24,4 +25,4 @@
 | Kroger Canned Black Beans (15 oz) | 1 | $0.99 | Typical price |
 | Kroger Frozen Spinach (10 oz) | 1 | $1.49 | Typical price |
 
-**Estimated Total Cost**: $53.02
+**Estimated Total Cost**: $58.99
