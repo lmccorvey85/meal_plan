@@ -19,6 +19,10 @@ Running log for this site (published at lmccorvey85.github.io/recipes/) and its 
 
 - **Stir fry oversalting fix** — baked into `dinner/velveted_chicken_stir_fry.html`: switched to low-sodium soy sauce, reduced oyster sauce.
 
+## New recipes
+
+- **2026-08-28 — Cajun Shrimp & Sausage Skillet with Buttered Garlic Green Beans.** Added `dinner/cajun_shrimp_sausage_skillet.html`, linked from `index.html`. Developed in the recipe Project, then scaled from the original 4-serving version to a 6-serving meal-prep batch with the sauce doubled again (on top of the recipe's usual "double sauce" rule) after the first cook ran too thin to coat the rice.
+
 ## Known / pending issues
 
 - **Cajun Ranch Baked Chicken Thighs** needs a smoother/more spreadable seasoning paste (flagged in the Claude.ai Project's own memory as of 2026-08-15) — the recipe file content itself hasn't been brought into a session yet, only the fact that the fix is pending.
